@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: #ffffff;
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 15px rgba(0, 71, 51, 0.03);
+        }
+
+        .nav-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--accent-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout-grid">
+        <aside class="sidebar">
+            <div class="mb-4 flex-center" style="justify-content: flex-start; gap: 10px;">
+                <i class="fas fa-chart-line text-lg" style="color: var(--accent-primary);"></i>
+                <span style="font-size: 1.25rem; font-weight: 700;">SalesAI</span>
+            </div>
+            <nav class="flex-1 mt-4">
+                <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="forecast.html" class="nav-item"><i class="fas fa-bolt"></i> Forecast</a>
+                <a href="risk.html" class="nav-item"><i class="fas fa-exclamation-triangle"></i> Risk Audit</a>
+                <a href="reports.html" class="nav-item active"><i class="fas fa-file-contract"></i> Reports</a>
+                <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+
+            <div class="mt-4 pt-4" style="border-top: 1px solid var(--glass-border);">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div
+                            style="width: 32px; height: 32px; background: var(--accent-primary); border-radius: 50%; display: grid; place-items: center;">
+                            <span style="font-size: 0.8rem; font-weight: bold;">T</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">Turjoy</div>
+                            <div class="text-sm text-muted">Admin</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-sign-out-alt text-muted pointer" id="logoutBtn"></i>
+                </div>
+            </div>
+        </aside>
+
+        <main style="padding: 2rem 3rem;">
+            <div class="mb-4">
+                <h1 class="text-xl font-bold">System Reports</h1>
+                <p class="text-muted">Automated generation and archive.</p>
+            </div>
+
+            <!-- Generator Panel -->
+            <div class="glass-card mb-4"
+                style="background: rgba(16, 185, 129, 0.03); border: 1px solid rgba(16, 185, 129, 0.15);">
+                <h3 class="font-bold mb-4"><i class="fas fa-magic text-accent-secondary"></i> Generate New Report</h3>
+
+                <div class="flex-between" style="align-items: flex-end; gap: 2rem;">
+                    <div style="flex: 1;">
+                        <label class="input-label">Report Type</label>
+                        <select class="input-field">
+                            <option>Weekly Summary</option>
+                            <option>Monthly Analysis</option>
+                            <option>Risk Audit Log</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label class="input-label">Date Range</label>
+                        <select class="input-field">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option>This Quarter</option>
+                        </select>
+                    </div>
+                    <div style="flex: 2;">
+                        <label class="input-label">Include Sections</label>
+                        <div style="display: flex; gap: 1rem; padding-top: 0.5rem;">
+                            <label style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer;">
+                                <input type="checkbox" checked style="accent-color: var(--accent-primary);">
+                                <span class="text-sm text-muted">Forecasts</span>
+                            </label>
+                            <label style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer;">
+                                <input type="checkbox" checked style="accent-color: var(--accent-primary);">
+                                <span class="text-sm text-muted">Risk Analysis</span>
+                            </label>
+                            <label style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer;">
+                                <input type="checkbox" style="accent-color: var(--accent-primary);">
+                                <span class="text-sm text-muted">Raw Data</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: Email Recipient -->
+                <div class="flex-between mt-4"
+                    style="gap: 2rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                    <div style="flex: 1;">
+                        <label class="input-label">Send Copy To (Optional)</label>
+                        <input type="email" class="input-field" id="reportEmailInfo" placeholder="manager@company.com">
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="generateBtn">GENERATE REPORT <i
+                                class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Reports -->
+            <div class="glass-card">
+                <div class="flex-between mb-4">
+                    <h3 class="font-bold">Recent Reports</h3>
+                    <div class="input-group mb-0">
+                        <input type="text" class="input-field" placeholder="Search reports..."
+                            style="padding: 6px 12px; font-size: 0.9rem;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Item 1 -->
+                    <div class="flex-between p-2"
+                        style="background: rgba(16, 185, 129, 0.02); border-radius: 12px; padding: 1rem;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; background: rgba(99, 102, 241, 0.1); border-radius: 8px; display: grid; place-items: center;">
+                                <i class="fas fa-file-pdf text-accent-primary"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold">Weekly Summary - Jan 1-7, 2025</div>
+                                <div class="text-muted text-sm">Generated: Jan 7, 2025 • 2.4 MB</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-secondary" style="padding: 6px 12px;"><i
+                                    class="fas fa-eye"></i></button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px;"><i
+                                    class="fas fa-download"></i></button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px;"><i
+                                    class="fas fa-envelope"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex-between p-2"
+                        style="background: rgba(16, 185, 129, 0.02); border-radius: 12px; padding: 1rem;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div
+                                style="width: 40px; height: 40px; background: rgba(99, 102, 241, 0.1); border-radius: 8px; display: grid; place-items: center;">
+                                <i class="fas fa-file-pdf text-accent-primary"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold">Monthly Analysis - December 2024</div>
+                                <div class="text-muted text-sm">Generated: Jan 1, 2025 • 5.1 MB</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-secondary" style="padding: 6px 12px;"><i
+                                    class="fas fa-eye"></i></button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px;"><i
+                                    class="fas fa-download"></i></button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px;"><i
+                                    class="fas fa-envelope"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script type="module" src="../static/js/auth.js"></script>
+    <script type="module" src="../static/js/reports.js"></script>
+</body>
+
+</html>

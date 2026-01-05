@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <!-- Dashboard Specific Styles -->
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #ffffff;
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 15px rgba(0, 71, 51, 0.03);
+        }
+
+        .nav-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--accent-primary);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            gap: 2rem;
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-content {
+            padding: 0 3rem 3rem 3rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+
+        .chart-container {
+            height: 300px;
+            width: 100%;
+            background: rgba(16, 185, 129, 0.02);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout-grid">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="mb-4 flex-center" style="justify-content: flex-start; gap: 10px;">
+                <i class="fas fa-chart-line text-lg" style="color: var(--accent-primary);"></i>
+                <span style="font-size: 1.25rem; font-weight: 700;">SalesAI</span>
+            </div>
+
+            <nav class="flex-1 mt-4">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="forecast.html" class="nav-item">
+                    <i class="fas fa-bolt"></i> Forecast
+                </a>
+                <a href="risk.html" class="nav-item">
+                    <i class="fas fa-exclamation-triangle"></i> Risk Audit
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i> Reports
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </nav>
+
+            <div class="mt-4 pt-4" style="border-top: 1px solid var(--glass-border);">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div
+                            style="width: 32px; height: 32px; background: var(--accent-primary); border-radius: 50%; display: grid; place-items: center;">
+                            <span style="font-size: 0.8rem; font-weight: bold;">T</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">Turjoy</div>
+                            <div class="text-sm text-muted">Admin</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-sign-out-alt text-muted pointer" id="logoutBtn"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main>
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="pointer relative">
+                    <i class="fas fa-bell text-muted text-lg"></i>
+                    <span
+                        style="position: absolute; top: -5px; right: -5px; width: 10px; height: 10px; background: var(--status-danger); border-radius: 50%;"></span>
+                </div>
+                <div class="user-pill">
+                    <span class="text-sm">Welcome back, Turjoy</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Widgets -->
+            <div class="dashboard-content animate-fade-in">
+                <div class="mb-4">
+                    <h1 class="text-xl font-bold">Dashboard</h1>
+                    <p class="text-muted">Real-time overview of sales performance and risk.</p>
+                </div>
+
+                <!-- Top Metrics -->
+                <div class="grid-cols-3 mb-4">
+                    <!-- Today's Forecast -->
+                    <div class="glass-card">
+                        <div class="flex-between">
+                            <span class="text-sm text-muted uppercase font-bold">Today's Forecast</span>
+                            <i class="fas fa-calendar-day text-accent-primary"></i>
+                        </div>
+                        <div class="metric-value">$3,245</div>
+                        <div class="flex-between">
+                            <span class="badge badge-success">
+                                <i class="fas fa-arrow-up"></i> +5.2%
+                            </span>
+                            <span class="text-sm text-muted">vs yesterday</span>
+                        </div>
+                    </div>
+
+                    <!-- Tomorrow's Forecast -->
+                    <div class="glass-card">
+                        <div class="flex-between">
+                            <span class="text-sm text-muted uppercase font-bold">Tomorrow</span>
+                            <i class="fas fa-forward text-accent-secondary"></i>
+                        </div>
+                        <div class="metric-value">$2,890</div>
+                        <div class="flex-between">
+                            <span class="badge badge-warning">
+                                <i class="fas fa-exclamation-triangle"></i> Review
+                            </span>
+                            <span class="text-sm text-muted">High Volatility</span>
+                        </div>
+                    </div>
+
+                    <!-- Risk Meter -->
+                    <div class="glass-card flex-center" style="flex-direction: column;">
+                        <span class="text-sm text-muted uppercase font-bold mb-2">Overall Risk Level</span>
+                        <div style="position: relative; width: 120px; height: 60px; overflow: hidden;">
+                            <div
+                                style="width: 120px; height: 120px; border-radius: 50%; border: 12px solid var(--glass-border); border-top-color: var(--status-warning); transform: rotate(-45deg);">
+                            </div>
+                        </div>
+                        <div class="text-lg font-bold mt-2">68/100</div>
+                        <span class="badge badge-warning mt-1">MEDIUM RISK</span>
+                    </div>
+                </div>
+
+                <!-- Main Chart Section -->
+                <div class="glass-card mb-4">
+                    <div class="flex-between mb-4">
+                        <h3 class="font-bold">7-Day Forecast Horizon</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Export
+                                PDF</button>
+                        </div>
+                    </div>
+                    <!-- Chart.js Container -->
+                    <div class="chart-container" id="mainChartContainer"
+                        style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bottom Panels -->
+                <div class="grid-cols-2">
+                    <!-- Risk Alerts -->
+                    <div class="glass-card">
+                        <h3 class="font-bold mb-4">Recent Alerts</h3>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="flex-between p-2"
+                                style="background: rgba(16, 185, 129, 0.03); border-radius: 8px; padding: 1rem;">
+                                <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <i class="fas fa-exclamation-circle text-danger"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Anomaly Detected</div>
+                                        <div class="text-muted text-sm">Jan 10 Forecast Spike</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary"
+                                    style="padding: 4px 10px; font-size: 0.7rem;">View</button>
+                            </div>
+
+                            <div class="flex-between p-2"
+                                style="background: rgba(16, 185, 129, 0.03); border-radius: 8px; padding: 1rem;">
+                                <div style="display: flex; gap: 1rem; align-items: center;">
+                                    <i class="fas fa-info-circle text-info"></i>
+                                    <div>
+                                        <div class="font-bold text-sm">Model Updated</div>
+                                        <div class="text-muted text-sm">Retrained 2 hours ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Activity -->
+                    <div class="glass-card">
+                        <h3 class="font-bold mb-4">System Status</h3>
+                        <ul class="text-sm text-muted"
+                            style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;">
+                            <li class="flex-between">
+                                <span><i class="fas fa-server mr-2"></i> API Uptime</span>
+                                <span class="text-success">99.9%</span>
+                            </li>
+                            <li class="flex-between">
+                                <span><i class="fas fa-database mr-2"></i> Database Sync</span>
+                                <span class="text-success">Active</span>
+                            </li>
+                            <li class="flex-between">
+                                <span><i class="fas fa-brain mr-2"></i> ML Model Ensemble</span>
+                                <span class="text-success">Ready</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script type="module" src="../static/js/auth.js"></script>
+    <script type="module" src="../static/js/dashboard.js"></script>
+</body>
+
+</html>

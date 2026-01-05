@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <style>
+        .register-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-wrapper">
+        <div class="glass-card register-card animate-fade-in">
+            <!-- HEADER -->
+            <div class="mb-4">
+                <i class="fas fa-user-plus text-xl" style="color: var(--status-success);"></i>
+                <h1 class="text-xl font-bold mt-2">Create Your Account</h1>
+                <p class="text-muted text-sm">Join the Sales Ops AI platform</p>
+            </div>
+
+            <!-- FORM -->
+            <form id="registerForm" onsubmit="return false;">
+
+                <div class="input-group text-left">
+                    <label class="input-label">Full Name</label>
+                    <input type="text" class="input-field" placeholder="John Doe" required>
+                </div>
+
+                <div class="input-group text-left">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" class="input-field" placeholder="name@company.com" required>
+                </div>
+
+                <div class="grid-cols-2" style="gap: 1rem; margin-bottom: 0;">
+                    <div class="input-group text-left">
+                        <label class="input-label">Password</label>
+                        <input type="password" class="input-field" placeholder="••••••••" required>
+                    </div>
+                    <div class="input-group text-left">
+                        <label class="input-label">Confirm</label>
+                        <input type="password" class="input-field" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <!-- Password Strength Meter (Visual Only for now) -->
+                <div class="flex-between mb-4 text-sm">
+                    <span class="text-muted">Strength:</span>
+                    <span class="badge badge-warning">Medium</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full" id="registerBtn">
+                    <span>SIGN UP</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="mt-4 text-sm text-muted">
+                Already have an account? <a href="/pages/login.html">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple Interaction Logic
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('registerBtn');
+            btn.innerHTML = '<div class="spinner"></div> Creating...';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Success!';
+                btn.style.background = 'var(--status-success)';
+
+                setTimeout(() => {
+                    // FIX: Updated path to use mounted /pages/
+                    window.location.href = '/pages/login.html';
+                }, 1500);
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

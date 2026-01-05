@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <style>
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-wrapper">
+        <div class="glass-card login-card animate-fade-in" id="loginCard">
+            <!-- LOGO -->
+            <div class="mb-4">
+                <i class="fas fa-robot logo-icon"></i>
+                <h1 class="text-xl font-bold">Sales Ops AI Agent</h1>
+                <p class="text-muted text-sm mt-1">Sign in to access sales forecasts</p>
+            </div>
+
+            <!-- FORM -->
+            <form id="loginForm" onsubmit="return false;">
+                <div class="input-group text-left">
+                    <label class="input-label">Email Address</label>
+                    <input type="email" class="input-field" id="email" placeholder="name@company.com" required>
+                </div>
+
+                <div class="input-group text-left">
+                    <div class="flex-between">
+                        <label class="input-label">Password</label>
+                        <a href="#" class="text-sm">Forgot?</a>
+                    </div>
+                    <input type="password" class="input-field" id="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="flex-between mb-4">
+                    <label class="flex-center pointer" style="gap: 8px;">
+                        <input type="checkbox" style="accent-color: var(--accent-primary);">
+                        <span class="text-sm text-muted">Remember me</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full" id="loginBtn">
+                    <span>LOGIN</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="mt-4 text-sm text-muted">
+                Don't have an account? <a href="/pages/register.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script type="module" src="../static/js/auth.js"></script>
+</body>
+
+</html>

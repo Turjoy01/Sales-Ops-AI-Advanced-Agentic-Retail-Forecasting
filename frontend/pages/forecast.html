@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecast | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: #ffffff;
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 15px rgba(0, 71, 51, 0.03);
+        }
+
+        .nav-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--accent-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout-grid">
+        <!-- SIDEBAR (Repeated for now, normally would be a component) -->
+        <aside class="sidebar">
+            <div class="mb-4 flex-center" style="justify-content: flex-start; gap: 10px;">
+                <i class="fas fa-chart-line text-lg" style="color: var(--accent-primary);"></i>
+                <span style="font-size: 1.25rem; font-weight: 700;">SalesAI</span>
+            </div>
+            <nav class="flex-1 mt-4">
+                <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="forecast.html" class="nav-item active"><i class="fas fa-bolt"></i> Forecast</a>
+                <a href="risk.html" class="nav-item"><i class="fas fa-exclamation-triangle"></i> Risk Audit</a>
+                <a href="reports.html" class="nav-item"><i class="fas fa-file-contract"></i> Reports</a>
+                <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+
+            <div class="mt-4 pt-4" style="border-top: 1px solid var(--glass-border);">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div
+                            style="width: 32px; height: 32px; background: var(--accent-primary); border-radius: 50%; display: grid; place-items: center;">
+                            <span style="font-size: 0.8rem; font-weight: bold;">T</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">Turjoy</div>
+                            <div class="text-sm text-muted">Admin</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-sign-out-alt text-muted pointer" id="logoutBtn"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main style="padding: 2rem 3rem;">
+            <!-- Header -->
+            <div class="flex-between mb-4">
+                <div>
+                    <a href="dashboard.html" class="text-sm text-muted"><i class="fas fa-arrow-left"></i> Back to
+                        Dashboard</a>
+                    <h1 class="text-xl font-bold mt-2">Sales Forecast Analysis</h1>
+                </div>
+                <div class="flex-between" style="gap: 1rem;">
+                    <button class="btn btn-secondary" id="downloadReportBtn">Download Report</button>
+                    <button class="btn btn-primary" id="sendAlertBtn">Send Alert to Team</button>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="glass-card mb-4">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <i class="fas fa-calendar-alt text-lg text-primary"></i>
+                        <div class="text-muted font-bold">SELECT DATE</div>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="date" class="input-field" id="forecastDateInput" style="width: auto;">
+                        <button class="btn btn-primary" id="analyzeBtn">ANALYZE <i
+                                class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Grid -->
+            <div class="grid-cols-2 mb-4">
+                <!-- Summary -->
+                <div class="glass-card" id="summaryCard">
+                    <h3 class="font-bold mb-4">Forecast Summary</h3>
+                    <div class="flex-between mb-2">
+                        <span class="text-muted">Predicted Sales</span>
+                        <span class="text-xl font-bold text-highlight" id="predictedSales">$0.00</span>
+                    </div>
+                    <div class="flex-between mb-2">
+                        <span class="text-muted">Confidence Range</span>
+                        <span class="text-sm" id="confidenceRange">--</span>
+                    </div>
+                    <div class="flex-between mb-4">
+                        <span class="text-muted">Model Confidence</span>
+                        <span class="badge badge-success" id="modelConfidence">--</span>
+                    </div>
+                    <hr style="border-color: rgba(16, 185, 129, 0.1); margin-bottom: 1rem;">
+                    <div class="text-sm text-muted">Model Breakdown:</div>
+                    <div class="flex-between mt-2 text-sm">
+                        <span>Prophet Model</span>
+                        <span id="prophetValue">--</span>
+                    </div>
+                    <div class="flex-between text-sm">
+                        <span>SARIMA Model</span>
+                        <span id="sarimaValue">--</span>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment -->
+                <div class="glass-card" id="riskCard">
+                    <h3 class="font-bold mb-4">Risk Assessment</h3>
+                    <div class="flex-center mb-4" style="flex-direction: column;">
+                        <div class="text-xl font-bold text-warning" id="riskLevelDisplay">--</div>
+                        <div class="text-muted text-sm" id="riskScoreDisplay">Score: --/100</div>
+                    </div>
+
+                    <div class="p-2 mb-2" style="background: rgba(16, 185, 129, 0.03); border-radius: 8px;">
+                        <div class="flex-between">
+                            <span class="text-sm"><i class="fas fa-exclamation-circle text-danger"></i> Anomaly
+                                Check</span>
+                            <span class="badge badge-secondary" id="anomalyBadge">Checking...</span>
+                        </div>
+                    </div>
+                    <div class="p-2" style="background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <div class="flex-between">
+                            <span class="text-sm"><i class="fas fa-chart-line text-warning"></i> Reliability</span>
+                            <span class="badge badge-secondary" id="reliabilityBadge">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="glass-card">
+                <div class="flex-between mb-2">
+                    <h3 class="font-bold"><i class="fas fa-robot text-primary"></i> AI Insights</h3>
+                </div>
+                <p class="text-muted" id="aiExplanation" style="line-height: 1.6;">
+                    Select a date and click analyze to see AI insights.
+                </p>
+                <div class="mt-4 p-2" id="aiRecommendation"
+                    style="background: rgba(99, 102, 241, 0.1); border-left: 4px solid var(--accent-primary); border-radius: 4px; display: none;">
+                    <strong>Recommendation:</strong> --
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script type="module" src="../static/js/auth.js"></script>
+    <script type="module" src="../static/js/forecast.js"></script>
+</body>
+
+</html>

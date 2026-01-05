@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Analysis | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: #ffffff;
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 15px rgba(0, 71, 51, 0.03);
+        }
+
+        .nav-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--accent-primary);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        tr:hover td {
+            background: rgba(16, 185, 129, 0.02);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout-grid">
+        <aside class="sidebar">
+            <div class="mb-4 flex-center" style="justify-content: flex-start; gap: 10px;">
+                <i class="fas fa-chart-line text-lg" style="color: var(--accent-primary);"></i>
+                <span style="font-size: 1.25rem; font-weight: 700;">SalesAI</span>
+            </div>
+            <nav class="flex-1 mt-4">
+                <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="forecast.html" class="nav-item"><i class="fas fa-bolt"></i> Forecast</a>
+                <a href="risk.html" class="nav-item active"><i class="fas fa-exclamation-triangle"></i> Risk Audit</a>
+                <a href="reports.html" class="nav-item"><i class="fas fa-file-contract"></i> Reports</a>
+                <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+
+            <div class="mt-4 pt-4" style="border-top: 1px solid var(--glass-border);">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div
+                            style="width: 32px; height: 32px; background: var(--accent-primary); border-radius: 50%; display: grid; place-items: center;">
+                            <span style="font-size: 0.8rem; font-weight: bold;">T</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">Turjoy</div>
+                            <div class="text-sm text-muted">Admin</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-sign-out-alt text-muted pointer" id="logoutBtn"></i>
+                </div>
+            </div>
+        </aside>
+
+        <main style="padding: 2rem 3rem;">
+            <div class="mb-4">
+                <h1 class="text-xl font-bold">Risk Analysis & Audit</h1>
+                <p class="text-muted">Historical anomaly detection and reliability scoring.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="glass-card mb-4">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="date" class="input-field" id="riskStartDate">
+                        <input type="date" class="input-field" id="riskEndDate">
+                        <select class="input-field" id="riskLevelFilter">
+                            <option value="ALL">All Risk Levels</option>
+                            <option value="HIGH">High</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LOW">Low</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="applyFiltersBtn"><i class="fas fa-filter"></i> Apply
+                        Filters</button>
+                </div>
+            </div>
+
+            <!-- Risk Distribution Chart -->
+            <div class="glass-card mb-4">
+                <h3 class="font-bold mb-4">Risk Distribution</h3>
+                <div style="height: 100px; background: rgba(16, 185, 129, 0.02); border-radius: 12px; display: flex; align-items: center; justify-content: center;"
+                    class="text-muted" id="riskPieChart">
+                    Loading stats...
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="glass-card">
+                <h3 class="font-bold mb-4">Risk Audit Table</h3>
+                <table id="riskTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Forecast Value</th>
+                            <th>Risk Score</th>
+                            <th>Level</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be injected here -->
+                    </tbody>
+                </table>
+                <div class="mt-4 flex-between">
+                    <span class="text-sm text-muted" id="tablePaginationInfo">Showing records...</span>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary" disabled>Prev</button>
+                        <button class="btn btn-secondary">Next</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script type="module" src="../static/js/auth.js"></script>
+    <script type="module" src="../static/js/risk.js"></script>
+</body>
+
+</html>

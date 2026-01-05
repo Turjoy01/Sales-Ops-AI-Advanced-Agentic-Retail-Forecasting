@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Sales Ops AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Design System -->
+    <link rel="stylesheet" href="../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/layout.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/utility.css">
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: #ffffff;
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 15px rgba(0, 71, 51, 0.03);
+        }
+
+        .nav-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(16, 185, 129, 0.05);
+            color: var(--accent-primary);
+        }
+
+        /* TABS */
+        .tabs-header {
+            display: flex;
+            gap: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 1rem 0;
+            font-size: 1rem;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-primary);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-grid">
+        <aside class="sidebar">
+            <div class="mb-4 flex-center" style="justify-content: flex-start; gap: 10px;">
+                <i class="fas fa-chart-line text-lg" style="color: var(--accent-primary);"></i>
+                <span style="font-size: 1.25rem; font-weight: 700;">SalesAI</span>
+            </div>
+            <nav class="flex-1 mt-4">
+                <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="forecast.html" class="nav-item"><i class="fas fa-bolt"></i> Forecast</a>
+                <a href="risk.html" class="nav-item"><i class="fas fa-exclamation-triangle"></i> Risk Audit</a>
+                <a href="reports.html" class="nav-item"><i class="fas fa-file-contract"></i> Reports</a>
+                <a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+
+            <div class="mt-4 pt-4" style="border-top: 1px solid var(--glass-border);">
+                <div class="flex-between">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div
+                            style="width: 32px; height: 32px; background: var(--accent-primary); border-radius: 50%; display: grid; place-items: center;">
+                            <span style="font-size: 0.8rem; font-weight: bold;">T</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">Turjoy</div>
+                            <div class="text-sm text-muted">Admin</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-sign-out-alt text-muted pointer" id="logoutBtn"></i>
+                </div>
+            </div>
+        </aside>
+
+        <main style="padding: 2rem 3rem;">
+            <div class="mb-4">
+                <h1 class="text-xl font-bold">System Configuration</h1>
+            </div>
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="openTab('general')">General</button>
+                <button class="tab-btn" onclick="openTab('integrations')">Integrations</button>
+                <button class="tab-btn" onclick="openTab('notifications')">Notifications</button>
+                <button class="tab-btn" onclick="openTab('api')">API Access</button>
+            </div>
+
+            <!-- TAB: GENERAL -->
+            <div id="general" class="tab-pane active">
+                <div class="glass-card" style="max-width: 800px;">
+                    <h3 class="font-bold mb-4">Forecast Preferences</h3>
+
+                    <div class="input-group">
+                        <label class="input-label">Forecast Horizon</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <label class="pointer"><input type="radio" name="horizon"> 7 Days</label>
+                            <label class="pointer"><input type="radio" name="horizon" checked> 14 Days</label>
+                            <label class="pointer"><input type="radio" name="horizon"> 30 Days</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Risk Threshold (Score)</label>
+                        <input type="range" min="0" max="100" value="70"
+                            style="width: 100%; accent-color: var(--accent-primary);">
+                        <div class="text-right text-sm text-muted">Triggers high risk at score 70</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Active Models</label>
+                        <div style="display: flex; gap: 2rem;">
+                            <label class="pointer flex-center" style="gap: 8px;"><input type="checkbox" checked>
+                                Prophet</label>
+                            <label class="pointer flex-center" style="gap: 8px;"><input type="checkbox" checked>
+                                SARIMA</label>
+                            <label class="pointer flex-center" style="gap: 8px;"><input type="checkbox"> LSTM
+                                (Beta)</label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary mt-4">Save Changes</button>
+                </div>
+            </div>
+
+            <!-- TAB: INTEGRATIONS -->
+            <div id="integrations" class="tab-pane">
+                <div class="grid-cols-2">
+                    <!-- Salesforce -->
+                    <div class="glass-card">
+                        <div class="flex-between mb-2">
+                            <h3 class="font-bold">Salesforce</h3>
+                            <i class="fas fa-cloud text-lg text-primary"></i>
+                        </div>
+                        <p class="text-sm text-muted mb-4">Sync opportunities and historical sales data.</p>
+                        <div class="badge badge-success mb-4" id="sfStatus">✅ Connected</div>
+                        <button class="btn btn-secondary w-full" id="sfSyncBtn">Manage Sync</button>
+                    </div>
+                    <!-- Google Sheets -->
+                    <div class="glass-card">
+                        <div class="flex-between mb-2">
+                            <h3 class="font-bold">Google Sheets</h3>
+                            <i class="fas fa-table text-lg text-success"></i>
+                        </div>
+                        <p class="text-sm text-muted mb-4">Import forecast targets from sheets.</p>
+                        <div class="badge badge-danger mb-4" id="gsStatus">❌ Disconnected</div>
+                        <button class="btn btn-primary w-full" id="gsConnectBtn">Connect Account</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: API -->
+            <div id="api" class="tab-pane">
+                <div class="glass-card">
+                    <h3 class="font-bold mb-4">API Keys</h3>
+                    <div class="input-group">
+                        <label class="input-label">Production Key</label>
+                        <div class="flex-between" style="gap: 1rem;">
+                            <input type="text" class="input-field" id="apiKeyField" value="sk_live_51Mz..." readonly>
+                            <button class="btn btn-secondary"
+                                onclick="navigator.clipboard.writeText(document.getElementById('apiKeyField').value)"><i
+                                    class="fas fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" id="regenKeyBtn">Regenerate Key</button>
+                </div>
+            </div>
+
+            <!-- TAB: NOTIFICATIONS -->
+            <div id="notifications" class="tab-pane">
+                <div class="glass-card">
+                    <h3 class="font-bold mb-4">Email Alerts</h3>
+                    <div class="input-group">
+                        <label class="input-label">Recipient Emails (comma separated)</label>
+                        <input type="text" class="input-field" id="alertEmails"
+                            placeholder="example@email.com, test@email.com">
+                    </div>
+                    <button class="btn btn-primary" id="saveNotifyBtn">Save Preferences</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
+            // Deactivate buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Activate selected
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+    <script type="module" src="../static/js/auth.js"></script>
+    <script type="module" src="/static/js/settings.js"></script>
+</body>
+
+</html>
