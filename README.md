@@ -100,3 +100,4 @@ Navigate to `http://localhost:8000` to access the dashboard.
 ---
 *Developed with Advanced Agentic Workflows for the Future of Retail.*
 
+<img width="1899" height="939" alt="image" src="https://github.com/user-attachments/assets/54613575-515e-484c-92d4-816baea05452" />
